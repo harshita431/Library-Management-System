@@ -1,6 +1,6 @@
 import java.util.*;
 
-// bboo class
+// book class
 class Book {
     int id;
     String name;
@@ -31,7 +31,7 @@ class Request {
 public class LibraryPQ {
     static HashMap<Integer, Book> library = new HashMap<>();
     static int counter = 0;
-    // Priority Queue
+
     static PriorityQueue<Request> pq = new PriorityQueue<>(new Comparator<Request>() {
         public int compare(Request a, Request b) {
             if (a.priority != b.priority) {
@@ -41,6 +41,7 @@ public class LibraryPQ {
             }
         }
     });
+
     static Scanner sc = new Scanner(System.in);
 
     // default books
@@ -62,7 +63,7 @@ public class LibraryPQ {
         library.put(15, new Book(15, "DSA", "Another Author"));
     }
 
-    // add book jab user book return karne gaya h
+    // add book
     static void addBook() {
         System.out.print("Enter Book ID: ");
         int id = sc.nextInt();
@@ -79,18 +80,22 @@ public class LibraryPQ {
         System.out.println("Book Added Successfully");
     }
 
-    // user request for book
+    // request book
     static void requestBook() {
         System.out.print("Enter Book ID: ");
         int id = sc.nextInt();
+
         if (!library.containsKey(id)) {
             System.out.println("Book not found");
             return;
         }
+
         System.out.print("Enter Priority (1=High, 2=Medium, 3=Low): ");
         int p = sc.nextInt();
+
         Request r = new Request(id, p, counter++);
         pq.add(r);
+
         System.out.println("Request Added");
     }
 
@@ -100,21 +105,25 @@ public class LibraryPQ {
             System.out.println("No requests available");
             return;
         }
+
         Request r = pq.poll();
         Book b = library.get(r.bookId);
-        if (b.available == false) {
+
+        if (!b.available) {
             System.out.println("Book already issued");
             return;
         }
+
         b.available = false;
         System.out.println("Book Issued -> " + b.name + " by " + b.author);
     }
 
-    // display book
+    // display books
     static void displayBooks() {
         for (Integer key : library.keySet()) {
             Book b = library.get(key);
-            if (b.available == true) {
+
+            if (b.available) {
                 System.out.println(b.id + " | " + b.name + " | " + b.author + " | Available");
             } else {
                 System.out.println(b.id + " | " + b.name + " | " + b.author + " | Issued");
@@ -122,9 +131,10 @@ public class LibraryPQ {
         }
     }
 
-    // main function
+    // main
     public static void main(String[] args) {
         addDefaultBooks();
+
         while (true) {
             System.out.println("\n1. Add Book");
             System.out.println("2. Request Book");
@@ -133,6 +143,7 @@ public class LibraryPQ {
             System.out.println("5. Exit");
 
             int ch = sc.nextInt();
+
             if (ch == 1) {
                 addBook();
             } else if (ch == 2) {
